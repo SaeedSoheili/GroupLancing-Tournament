@@ -1,0 +1,145 @@
+.talent-div {
+  background-color: aqua;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.talent-logo-image {
+  width: 200px;
+  margin: 0 auto;
+  display: block;
+}
+
+.first-one-div-talent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  /* background-color: black; */
+  position: relative;
+  flex-direction: column;
+}
+
+.first-one-circle-div-talent {
+  width: 50px;
+  height: 50px;
+  background-color: #ffb749;
+  border: 2px solid #fff;
+  border-radius: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Bungee", cursive;
+  font-weight: 900;
+  font-size: 15px;
+  position: absolute;
+  top: 0px;
+  left: 80px;
+  z-index: 3;
+}
+
+.first-one-circle-number-div-talent {
+  font-size: 20px;
+  margin: 2px;
+}
+
+.user-image-logo-talent {
+  width: 130px;
+  background-color: #fff;
+  border-radius: 100%;
+  z-index: 1;
+}
+
+.first-one-details-box-talent {
+  width: 280px;
+  height: 50px;
+  background-color: #ffb749;
+  box-shadow: 0.1px 0.1px 5px black;
+  border-radius: 25px;
+  margin-top: -10px;
+  z-index: 2;
+  font-family: "Vazirmatn", sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.first-one-name-talent {
+  width: 100%;
+  font-weight: 900;
+  display: block;
+  margin-bottom: 0px;
+  margin-top: 5px;
+  font-size: 17px;
+}
+
+.first-one-second-row-talent {
+  display: block;
+  width: 100%;
+  margin-top: -5px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  direction: rtl;
+}
+
+/* Users List */
+
+.list-users-talents {
+  background-color: green;
+  margin-top: 10px;
+}
+
+.user-box-div-talents {
+  margin-top: 0px;
+  margin-bottom: -20px;
+  background-color: gray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  direction: rtl;
+  font-family: "Vazirmatn", sans-serif;
+  color: #fff;
+  width: 350px;
+}
+
+.user-box-circle-talents {
+  width: 30px;
+  height: 30px;
+  background-color: #ffb749;
+  border-radius: 100%;
+  border: 3px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 500;
+  font-family: "Bungee", cursive;
+  font-size: 18px;
+  color: #000;
+}
+
+.user-name-job-div-talents {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: -20px;
+}
+
+.user-name-talents {
+  margin-bottom: 0px;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.user-job-talents {
+  margin-top: 0px;
+  font-size: 14px;
+}
