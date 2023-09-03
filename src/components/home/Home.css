@@ -11,6 +11,17 @@ body {
   padding: 0px;
 }
 
+.party-popper-image {
+  position: absolute;
+  width: 40%;
+  z-index: -1;
+}
+
+.party-popper-image-2 {
+  right: 0;
+  transform: scaleX(-1);
+}
+
 .title-home {
   color: #fff;
   text-align: center;
@@ -33,10 +44,21 @@ body {
 }
 
 .container-body {
-  background-color: red;
-  width: 100%;
-  height: 500px;
+  margin: 0 auto;
+  /* background-color: red; */
+  width: 80%;
+  height: auto;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+.footer-home {
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  margin-bottom: 100px;
 }

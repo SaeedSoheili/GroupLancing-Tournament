@@ -1,14 +1,17 @@
 .talent-div {
-  background-color: aqua;
+  /* background-color: aqua; */
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  width: 35%;
+  margin-bottom: 50px;
 }
 
 .talent-logo-image {
   width: 200px;
   margin: 0 auto;
   display: block;
+  z-index: 3;
 }
 
 .first-one-div-talent {
@@ -19,6 +22,8 @@
   /* background-color: black; */
   position: relative;
   flex-direction: column;
+  width: 300px;
+  margin: 0 auto;
 }
 
 .first-one-circle-div-talent {
@@ -36,7 +41,7 @@
   font-size: 15px;
   position: absolute;
   top: 0px;
-  left: 80px;
+  left: 60px;
   z-index: 3;
 }
 
@@ -92,21 +97,14 @@
 /* Users List */
 
 .list-users-talents {
-  background-color: green;
+  /* background-color: green; */
   margin-top: 10px;
 }
 
 .user-box-div-talents {
-  margin-top: 0px;
-  margin-bottom: -20px;
-  background-color: gray;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  direction: rtl;
+  /* background-color: gray; */
   font-family: "Vazirmatn", sans-serif;
   color: #fff;
-  width: 350px;
 }
 
 .user-box-circle-talents {
@@ -128,18 +126,38 @@
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
-  margin-right: -20px;
+  position: relative;
 }
 
 .user-name-talents {
   margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: 15px;
   font-weight: 600;
   font-size: 15px;
 }
 
 .user-job-talents {
-  margin-top: 0px;
   font-size: 14px;
+  position: absolute;
+  font-weight: 300;
+  top: 3px;
+}
+
+.user-table-talents {
+  border-collapse: collapse;
+  width: 350px;
+  direction: rtl;
+  margin: 0 auto;
+}
+
+.user-table-talents td {
+  /* border: 1px solid #dddddd; */
+  text-align: center;
+}
+
+.user-table-talents tr {
+  line-height: 1.8;
 }
