@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { Link as LinkReactRouterDom } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar"; // Import Snackbar
 import MuiAlert from "@mui/material/Alert"; // Import Alert for Snackbar
+import Cookies from "js-cookie";
 
 function Copyright(props) {
   return (
@@ -43,6 +44,29 @@ export default function Login({ setIsLogin }) {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
+  useEffect(() => {
+    const checkAutoLoginCookie = async () => {
+      const autoLoginCookie = Cookies.get("tekanesh_auto_login");
+
+      if (autoLoginCookie) {
+        try {
+          const response = await fetch(
+            `http://192.168.1.100:4000/autologin/${autoLoginCookie}`
+          );
+
+          if (response.status === 200) {
+            setIsLogin(true);
+            navigate("/panel");
+          }
+        } catch (error) {
+          console.error("Error checking auto-login cookie:", error);
+        }
+      }
+    };
+
+    checkAutoLoginCookie();
+  }, []);
+
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -63,10 +87,17 @@ export default function Login({ setIsLogin }) {
       });
 
       if (response.status === 200) {
+        // Login successful
         setIsLogin(true);
         setIsSuccess(true);
         setSnackbarMessage("Login successful");
         setOpenSnackbar(true);
+
+        // Set the cookie with the value received from the backend
+        const responseBody = await response.json();
+        const { cookie } = responseBody; // Assuming your backend sends the cookie value in the response
+        Cookies.set("tekanesh_auto_login", cookie, { expires: 1 }); // Set the cookie for 7 days
+
         setTimeout(() => {
           navigate("/panel");
         }, 3000); // Navigate to "/panel" after 3 seconds
