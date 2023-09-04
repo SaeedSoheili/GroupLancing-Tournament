@@ -12,7 +12,10 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { Link as LinkReactRouterDom } from "react-router-dom";
+import Snackbar from "@mui/material/Snackbar"; // Import Snackbar
+import MuiAlert from "@mui/material/Alert"; // Import Alert for Snackbar
 
 function Copyright(props) {
   return (
@@ -24,7 +27,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="https://etekanesh.com/">
-        ETakanesh
+        ETekanesh
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
@@ -32,22 +35,52 @@ function Copyright(props) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function Login({ setIsLogin }) {
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    setIsLogin(true); // Set isLogin to true on successful login
-    navigate("/panel"); // Use navigate to redirect to the "/panel" route
+    const email = data.get("email");
+    const password = data.get("password");
+
+    try {
+      const response = await fetch("http://192.168.1.100:4000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (response.status === 200) {
+        setIsLogin(true);
+        setIsSuccess(true);
+        setSnackbarMessage("Login successful");
+        setOpenSnackbar(true);
+        setTimeout(() => {
+          navigate("/panel");
+        }, 3000); // Navigate to "/panel" after 3 seconds
+      } else {
+        setIsSuccess(false);
+        setSnackbarMessage("Login failed");
+        setOpenSnackbar(true);
+      }
+    } catch (error) {
+      setIsSuccess(false);
+      setSnackbarMessage("Error logging in");
+      setOpenSnackbar(true);
+      console.error("Error logging in:", error);
+    }
   };
 
   return (
@@ -106,22 +139,33 @@ export default function Login({ setIsLogin }) {
             >
               Sign In
             </Button>
-            {/* <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+            <Grid container>
               <Grid item>
-                <Link href="#" variant="body2">
+                <LinkReactRouterDom to="/register" variant="body2">
                   {"Don't have an account? Sign Up"}
-                </Link>
+                </LinkReactRouterDom>
               </Grid>
-            </Grid> */}
+            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
+
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseSnackbar}
+          severity={isSuccess ? "success" : "error"}
+        >
+          {snackbarMessage}
+        </MuiAlert>
+      </Snackbar>
     </ThemeProvider>
   );
 }
