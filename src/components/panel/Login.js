@@ -17,6 +17,7 @@ import { Link as LinkReactRouterDom } from "react-router-dom";
 import Snackbar from "@mui/material/Snackbar"; // Import Snackbar
 import MuiAlert from "@mui/material/Alert"; // Import Alert for Snackbar
 import Cookies from "js-cookie";
+import { LoadingButton } from "@mui/lab";
 
 function Copyright(props) {
   return (
@@ -43,6 +44,7 @@ export default function Login({ setIsLogin }) {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     const checkAutoLoginCookie = async () => {
@@ -51,7 +53,7 @@ export default function Login({ setIsLogin }) {
       if (autoLoginCookie) {
         try {
           const response = await fetch(
-            `http://192.168.1.100:4000/autologin/${autoLoginCookie}`
+            `http://localhost:4000/autologin/${autoLoginCookie}`
           );
 
           if (response.status === 200) {
@@ -73,12 +75,13 @@ export default function Login({ setIsLogin }) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setIsLoading(true);
     const data = new FormData(event.currentTarget);
     const email = data.get("email");
     const password = data.get("password");
 
     try {
-      const response = await fetch("http://192.168.1.100:4000/login", {
+      const response = await fetch("http://localhost:4000/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -92,6 +95,7 @@ export default function Login({ setIsLogin }) {
         setIsSuccess(true);
         setSnackbarMessage("Login successful");
         setOpenSnackbar(true);
+        setIsLoading(false);
 
         // Set the cookie with the value received from the backend
         const responseBody = await response.json();
@@ -105,12 +109,14 @@ export default function Login({ setIsLogin }) {
         setIsSuccess(false);
         setSnackbarMessage("Login failed");
         setOpenSnackbar(true);
+        setIsLoading(false);
       }
     } catch (error) {
       setIsSuccess(false);
       setSnackbarMessage("Error logging in");
       setOpenSnackbar(true);
       console.error("Error logging in:", error);
+      setIsLoading(false);
     }
   };
 
@@ -162,14 +168,15 @@ export default function Login({ setIsLogin }) {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             />
-            <Button
+            <LoadingButton
+              loading={isLoading}
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
               Sign In
-            </Button>
+            </LoadingButton>
             <Grid container>
               <Grid item>
                 <LinkReactRouterDom to="/register" variant="body2">
