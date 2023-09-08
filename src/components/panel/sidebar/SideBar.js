@@ -18,26 +18,59 @@ export default function SideBar() {
     navigate("/login");
   };
 
-  let adminsMenuItems = [
-    { name: "داشبورد", icon: <DashboardIcon className="icon-sidebar" /> },
-    { name: "پروژه ها", icon: <ChecklistIcon className="icon-sidebar" /> },
-    { name: "کاربران", icon: <GroupIcon className="icon-sidebar" /> },
-    { name: "مسابقات", icon: <EmojiEventsIcon className="icon-sidebar" /> },
+  const changeMenu = (menu) => {
+    navigate(menu);
+  };
+
+  const adminsMenuItems = [
+    {
+      name: "داشبورد",
+      icon: <DashboardIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/dashboard"),
+    },
+    {
+      name: "پروژه ها",
+      icon: <ChecklistIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/projects"),
+    },
+    {
+      name: "کاربران",
+      icon: <GroupIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/users"),
+    },
+    {
+      name: "مسابقات",
+      icon: <EmojiEventsIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/competitions"),
+    },
     {
       name: "خروج",
       icon: <ExitToAppIcon className="icon-sidebar" />,
-      onClick: logout, // Add the onClick handler for logout
+      onClick: logout,
     },
   ];
-  let usersMenuItems = [
-    { name: "داشبورد", icon: <DashboardIcon className="icon-sidebar" /> },
-    { name: "پروژه ها", icon: <ChecklistIcon className="icon-sidebar" /> },
+
+  const usersMenuItems = [
+    {
+      name: "داشبورد",
+      icon: <DashboardIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/dashboard"),
+    },
+    {
+      name: "پروژه ها",
+      icon: <ChecklistIcon className="icon-sidebar" />,
+      onClick: () => changeMenu("/panel/projects"),
+    },
     {
       name: "خروج",
       icon: <ExitToAppIcon className="icon-sidebar" />,
-      onClick: logout, // Add the onClick handler for logout
+      onClick: logout,
     },
   ];
+
+  // Define menu items based on user role
+  const userRole = "admin"; // Replace with actual user role or logic
+  const menuItems = userRole === "admin" ? adminsMenuItems : usersMenuItems;
 
   return (
     <div className="container-sidebar">
@@ -48,7 +81,7 @@ export default function SideBar() {
       />
       <p className="welcome-message-sidebar">سلام سعید ! خوش اومدی</p>
       <ul className="ul-sidebar">
-        {adminsMenuItems.map((item, index) => {
+        {menuItems.map((item, index) => {
           return (
             <li key={index} className="li-sidebar" onClick={item.onClick}>
               {item.icon} {item.name}
