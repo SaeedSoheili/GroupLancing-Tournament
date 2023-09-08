@@ -58,7 +58,7 @@ export default function Login({ setIsLogin }) {
 
           if (response.status === 200) {
             setIsLogin(true);
-            navigate("/panel");
+            navigate("/panel/dashboard");
           }
         } catch (error) {
           console.error("Error checking auto-login cookie:", error);
@@ -103,7 +103,7 @@ export default function Login({ setIsLogin }) {
         Cookies.set("tekanesh_auto_login", cookie, { expires: 1 }); // Set the cookie for 7 days
 
         setTimeout(() => {
-          navigate("/panel");
+          navigate("/panel/dashboard");
         }, 3000); // Navigate to "/panel" after 3 seconds
       } else {
         setIsSuccess(false);

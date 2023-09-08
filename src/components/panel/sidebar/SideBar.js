@@ -4,7 +4,8 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import ChecklistIcon from "@mui/icons-material/Checklist";
 import GroupIcon from "@mui/icons-material/Group";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
-import { useNavigate } from "react-router-dom";
+import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
+import { Outlet, useNavigate } from "react-router-dom";
 
 export default function SideBar() {
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
@@ -21,6 +22,7 @@ export default function SideBar() {
     { name: "داشبورد", icon: <DashboardIcon className="icon-sidebar" /> },
     { name: "پروژه ها", icon: <ChecklistIcon className="icon-sidebar" /> },
     { name: "کاربران", icon: <GroupIcon className="icon-sidebar" /> },
+    { name: "مسابقات", icon: <EmojiEventsIcon className="icon-sidebar" /> },
     {
       name: "خروج",
       icon: <ExitToAppIcon className="icon-sidebar" />,
@@ -41,7 +43,7 @@ export default function SideBar() {
     <div className="container-sidebar">
       <img
         className="logo-sidebar"
-        src="./assets/Logo-Tekanesh.png"
+        src="../assets/Logo-Tekanesh.png"
         alt="Logo"
       />
       <p className="welcome-message-sidebar">سلام سعید ! خوش اومدی</p>
