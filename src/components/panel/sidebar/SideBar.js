@@ -7,7 +7,7 @@ import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import EmojiEventsIcon from "@mui/icons-material/EmojiEvents";
 import { Outlet, useNavigate } from "react-router-dom";
 
-export default function SideBar() {
+export default function SideBar({ loggedInUserName, userRoleMain }) {
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
 
   const logout = () => {
@@ -69,9 +69,9 @@ export default function SideBar() {
   ];
 
   // Define menu items based on user role
-  const userRole = "admin"; // Replace with actual user role or logic
+  const userRole = userRoleMain; // Replace with actual user role or logic
   const menuItems = userRole === "admin" ? adminsMenuItems : usersMenuItems;
-
+  let userFirstName = loggedInUserName;
   return (
     <div className="container-sidebar">
       <img
@@ -79,7 +79,9 @@ export default function SideBar() {
         src="../assets/Logo-Tekanesh.png"
         alt="Logo"
       />
-      <p className="welcome-message-sidebar">سلام سعید ! خوش اومدی</p>
+      <p className="welcome-message-sidebar">
+        سلام {userFirstName} ! خوش اومدی
+      </p>
       <ul className="ul-sidebar">
         {menuItems.map((item, index) => {
           return (

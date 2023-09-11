@@ -3,11 +3,11 @@ import SideBar from "./sidebar/SideBar";
 import "./Panel.css";
 import { Outlet } from "react-router-dom";
 
-export default function Panel() {
+export default function Panel({ loggedInUserName, userRole }) {
   return (
     <>
       <div className="container-div-panel">
-        <SideBar />
+        <SideBar loggedInUserName={loggedInUserName} userRoleMain={userRole} />
         <Outlet />
       </div>
     </>

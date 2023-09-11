@@ -39,7 +39,12 @@ function Copyright(props) {
 
 const defaultTheme = createTheme();
 
-export default function Login({ setIsLogin }) {
+export default function Login({
+  isLoginHandler,
+  loggedInUserNameHandler,
+  loggedInUserLastNameHandler,
+  userRoleHandler,
+}) {
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -57,8 +62,14 @@ export default function Login({ setIsLogin }) {
           );
 
           if (response.status === 200) {
-            setIsLogin(true);
+            isLoginHandler(true);
             navigate("/panel/dashboard");
+            const responseBody = await response.json();
+
+            // Set the loggedInUserName and loggedInUserLastName in state
+            loggedInUserNameHandler(responseBody.firstName);
+            loggedInUserLastNameHandler(responseBody.lastName);
+            userRoleHandler(responseBody.role);
           }
         } catch (error) {
           console.error("Error checking auto-login cookie:", error);
@@ -91,7 +102,7 @@ export default function Login({ setIsLogin }) {
 
       if (response.status === 200) {
         // Login successful
-        setIsLogin(true);
+        isLoginHandler(true);
         setIsSuccess(true);
         setSnackbarMessage("Login successful");
         setOpenSnackbar(true);
@@ -100,7 +111,12 @@ export default function Login({ setIsLogin }) {
         // Set the cookie with the value received from the backend
         const responseBody = await response.json();
         const { cookie } = responseBody; // Assuming your backend sends the cookie value in the response
-        Cookies.set("tekanesh_auto_login", cookie, { expires: 1 }); // Set the cookie for 7 days
+        Cookies.set("tekanesh_auto_login", cookie, { expires: 1 });
+
+        // Set the loggedInUserName and loggedInUserLastName in state
+        loggedInUserNameHandler(responseBody.firstName);
+        loggedInUserLastNameHandler(responseBody.lastName);
+        userRoleHandler(responseBody.role);
 
         setTimeout(() => {
           navigate("/panel/dashboard");

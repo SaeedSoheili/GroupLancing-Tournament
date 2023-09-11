@@ -11,6 +11,25 @@ import Competitions from "./components/panel/competitions/Competitions";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false); // Initialize isLogin to false
+  const [loggedInUserName, setloggedInUserName] = useState(""); // Initialize isLogin to false
+  const [loggedInUserLastName, setloggedInUserLastName] = useState(""); // Initialize isLogin to false
+  const [userRole, setuserRole] = useState("user"); // Initialize isLogin to false
+
+  let isLoginHandler = (value) => {
+    setIsLogin(value);
+  };
+
+  let loggedInUserNameHandler = (value) => {
+    setloggedInUserName(value);
+  };
+
+  let loggedInUserLastNameHandler = (value) => {
+    setloggedInUserLastName(value);
+  };
+
+  let userRoleHandler = (value) => {
+    setuserRole(value);
+  };
 
   return (
     <>
@@ -19,7 +38,16 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route
             path="panel"
-            element={isLogin ? <Panel /> : <Navigate to="/login" />}
+            element={
+              isLogin ? (
+                <Panel
+                  loggedInUserName={loggedInUserName}
+                  userRole={userRole}
+                />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
           >
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<Projects />} />
@@ -28,7 +56,14 @@ function App() {
           </Route>
           <Route
             path="login"
-            element={<Login setIsLogin={setIsLogin} />} // Pass setIsLogin to Login component
+            element={
+              <Login
+                isLoginHandler={isLoginHandler}
+                loggedInUserNameHandler={loggedInUserNameHandler}
+                loggedInUserLastNameHandler={loggedInUserLastNameHandler}
+                userRoleHandler={userRoleHandler}
+              />
+            } // Pass setIsLogin to Login component
           />
           <Route path="register" element={<Register />} />
         </Routes>
