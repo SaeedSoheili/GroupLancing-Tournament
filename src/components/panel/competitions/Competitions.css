@@ -1,0 +1,81 @@
+.container-div-competitions {
+  width: 80%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Vazirmatn", sans-serif;
+}
+
+.table-container-competitions {
+  width: 90%;
+  max-height: 70vh;
+  height: auto;
+  /* height: auto; */
+  overflow-y: scroll;
+  background-color: #fff;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+}
+
+.button-create-new-comp {
+  margin-top: 50px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #198754;
+  width: 90%;
+  height: 7vh;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-weight: 900;
+  cursor: pointer;
+}
+
+.modal-title,
+.modal-body,
+.modal-footer {
+  text-align: center;
+  font-family: "Vazirmatn", sans-serif;
+}
+
+.milestones-hr-comp {
+  margin-top: 50px;
+}
+
+.milestones-title-comp {
+  font-size: 20px;
+  margin-bottom: 50px;
+  text-align: center;
+  display: block;
+  width: 100%;
+}
+
+.milestones-inputs-comp {
+  width: 90%;
+}
+
+.milestones-inputs-comp::placeholder {
+  text-align: center;
+}
+
+.milestones-check-comp {
+  width: 10%;
+}
+
+.milestones-form-group-comp {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.milestones-div-comp {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-bottom: 10px;
+}

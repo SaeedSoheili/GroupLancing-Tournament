@@ -25,31 +25,39 @@ import { visuallyHidden } from "@mui/utils";
 const tableCellStyle = {
   fontFamily: '"Vazirmatn", sans-serif',
   textAlign: "center",
+  direction: "rtl",
 };
 
-function createData(name, income, projects, avrageIncome) {
+function createData(
+  name,
+  income,
+  projects,
+  avrageIncome,
+  starttime,
+  endtime,
+  status
+) {
   return {
     name,
     income,
     projects,
     avrageIncome,
+    starttime,
+    endtime,
+    status,
   };
 }
 
 const rows = [
-  createData("آرمان جعفری", 305, 3.7, 67),
-  createData("مهران اسدی", 452, 25.0, 51),
-  createData("سارا علیزاده", 262, 16.0, 24),
-  createData("حسن رحیمی", 159, 6.0, 4.0),
-  createData("نگین کریمی", 356, 16.0, 3.9),
-  createData("پارسا حسینی", 408, 3.2, 6.5),
-  createData("شایان محمدی", 237, 9.0, 4.3),
-  createData("سحر مرادی", 375, 0.0, 0.0),
-  createData("مریم محمودی", 518, 26.0, 7.0),
-  createData("امیرعباس موسوی", 392, 0.2, 0.0),
-  createData("فاطمه جوانمرد", 318, 0, 2.0),
-  createData("علی نوری", 360, 19.0, 37.0),
-  createData("زهرا صادقی", 437, 18.0, 4.0),
+  createData(
+    "آرمان جعفری",
+    305,
+    3.7,
+    67,
+    "1402-2-3",
+    "1402-3-5",
+    "پایان یافته"
+  ),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -88,8 +96,8 @@ const headCells = [
   {
     id: "name",
     numeric: false,
-    disablePadding: true,
-    label: "نام و نام خانوادگی",
+    disablePadding: false,
+    label: "نام مسابقه",
   },
   {
     id: "income",
@@ -109,6 +117,30 @@ const headCells = [
     disablePadding: false,
     label: "میانگین درآمد / پروژه",
   },
+  {
+    id: "starttime",
+    numeric: false,
+    disablePadding: false,
+    label: "تاریخ شروع",
+  },
+  {
+    id: "endtime",
+    numeric: false,
+    disablePadding: false,
+    label: "تاریخ پایان",
+  },
+  {
+    id: "status",
+    numeric: false,
+    disablePadding: false,
+    label: "وضعیت",
+  },
+  {
+    id: "manage",
+    numeric: false,
+    disablePadding: false,
+    label: "مدیریت",
+  },
 ];
 
 function EnhancedTableHead(props) {
@@ -127,8 +159,8 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          {/* <Checkbox
+        {/* <TableCell padding="checkbox">
+          <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -136,8 +168,8 @@ function EnhancedTableHead(props) {
             inputProps={{
               "aria-label": "select all desserts",
             }}
-          /> */}
-        </TableCell>
+          />
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             style={tableCellStyle}
@@ -208,7 +240,7 @@ function EnhancedTableToolbar(props) {
           component="div"
           style={tableCellStyle}
         >
-          لیست کاربران
+          مسابقات
         </Typography>
       )}
 
@@ -338,36 +370,45 @@ export default function EnhancedTable() {
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell padding="checkbox">
-                      {/* <Checkbox
+                    {/* <TableCell padding="checkbox">
+                      <Checkbox
                         color="primary"
                         checked={isItemSelected}
                         inputProps={{
                           "aria-labelledby": labelId,
                         }}
-                      /> */}
-                    </TableCell>
+                      />
+                    </TableCell> */}
                     <TableCell
                       style={tableCellStyle}
                       component="th"
                       id={labelId}
                       scope="row"
-                      padding="none"
                     >
                       {row.name}
                     </TableCell>
-                    <TableCell style={tableCellStyle} align="right">
+                    <TableCell style={tableCellStyle} align="center">
                       {row.income}
                     </TableCell>
-                    <TableCell style={tableCellStyle} align="right">
+                    <TableCell style={tableCellStyle} align="center">
                       {row.projects}
                     </TableCell>
-                    <TableCell style={tableCellStyle} align="right">
+                    <TableCell style={tableCellStyle} align="center">
                       {row.avrageIncome}
                     </TableCell>
-                    <TableCell style={tableCellStyle} align="right">
-                      {row.protein}
+                    <TableCell style={tableCellStyle} align="center">
+                      {row.starttime}
                     </TableCell>
+                    <TableCell style={tableCellStyle} align="center">
+                      {row.endtime}
+                    </TableCell>
+                    <TableCell style={tableCellStyle} align="center">
+                      {row.status}
+                    </TableCell>
+                    <TableCell
+                      style={tableCellStyle}
+                      align="center"
+                    ></TableCell>
                   </TableRow>
                 );
               })}

@@ -134,14 +134,12 @@
 .user-name-talents {
   margin-bottom: 0px;
   margin-top: 0px;
-  margin-bottom: 15px;
   font-weight: 600;
   font-size: 15px;
 }
 
 .user-job-talents {
   font-size: 14px;
-  position: absolute;
   font-weight: 300;
   top: 3px;
 }
