@@ -1,0 +1,17 @@
+.container-div-users {
+  width: 80%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-container-div {
+  width: 80%;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  overflow-y: scroll;
+  border-radius: 20px;
+}

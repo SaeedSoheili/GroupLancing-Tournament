@@ -6,6 +6,7 @@ import Login from "./components/panel/Login";
 import Register from "./components/panel/Register";
 import Dashboard from "./components/panel/dashboard/Dashboard";
 import Projects from "./components/panel/projects/Projects";
+import Users from "./components/panel/users/Users";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false); // Initialize isLogin to false
@@ -21,6 +22,7 @@ function App() {
           >
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="projects" element={<Projects />} />
+            <Route path="users" element={<Users />} />
           </Route>
           <Route
             path="login"
