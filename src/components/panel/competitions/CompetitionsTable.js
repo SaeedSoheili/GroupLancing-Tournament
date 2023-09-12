@@ -424,7 +424,9 @@ export default function EnhancedTable() {
                       {row.projects}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
-                      {isNaN(row.avrageIncome) ? "N/A" : "$" + row.avrageIncome}
+                      {isNaN(row.avrageIncome)
+                        ? "N/A"
+                        : "$" + row.avrageIncome.toFixed(1)}
                     </TableCell>
 
                     <TableCell style={tableCellStyle} align="center">
