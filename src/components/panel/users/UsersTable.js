@@ -234,7 +234,7 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("asc");
+  const [order, setOrder] = React.useState("desc");
   const [orderBy, setOrderBy] = React.useState("income");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);

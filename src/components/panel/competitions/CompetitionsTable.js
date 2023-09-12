@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -48,17 +48,17 @@ function createData(
   };
 }
 
-const rows = [
-  createData(
-    "آرمان جعفری",
-    305,
-    3.7,
-    67,
-    "1402-2-3",
-    "1402-3-5",
-    "پایان یافته"
-  ),
-];
+// const rows = [
+//   createData(
+//     "آرمان جعفری",
+//     305,
+//     3.7,
+//     67,
+//     "1402-2-3",
+//     "1402-3-5",
+//     "پایان یافته"
+//   ),
+// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -272,6 +272,36 @@ export default function EnhancedTable() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = () => {
+      fetch("http://localhost:4000/getcomp")
+        .then((response) => response.json())
+        .then((data) => {
+          const newRows = data.map((competition) => {
+            const avrageIncome = competition.income / competition.projects;
+            return createData(
+              competition.competitionName,
+              competition.income,
+              competition.projects,
+              avrageIncome,
+              competition.startDate,
+              competition.endDate,
+              competition.status
+            );
+          });
+          setRows(newRows);
+          setOrder("desc"); // Set your desired default sorting order
+        })
+        .catch((error) => {
+          setError(error);
+        });
+    };
+
+    fetchData();
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -394,8 +424,9 @@ export default function EnhancedTable() {
                       {row.projects}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
-                      {row.avrageIncome}
+                      {isNaN(row.avrageIncome) ? "N/A" : row.avrageIncome}
                     </TableCell>
+
                     <TableCell style={tableCellStyle} align="center">
                       {row.starttime}
                     </TableCell>

@@ -97,7 +97,7 @@ const rows = [
   createData("سعید رضایی", "accepted", 500, "2003", " "),
 ].sort((a, b) => (a.income > b.income ? -1 : 1));
 
-export default function ProjectsTable() {
+export default function UserProjectsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 

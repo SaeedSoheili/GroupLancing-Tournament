@@ -7,14 +7,60 @@ import AddIcon from "@mui/icons-material/Add";
 
 export default function Competitions() {
   const [showModal, setShowModal] = useState(false);
-  const [milestone1Enabled, setMilestone1Enabled] = useState(false);
-  const [milestone2Enabled, setMilestone2Enabled] = useState(false);
-  const [milestone3Enabled, setMilestone3Enabled] = useState(false);
-  const [milestone4Enabled, setMilestone4Enabled] = useState(false);
-  const [milestone5Enabled, setMilestone5Enabled] = useState(false);
+  const [competitionName, setCompetitionName] = useState("");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [milestones, setMilestones] = useState([
+    { name: "مرحله 1", value: "", enabled: false },
+    { name: "مرحله 2", value: "", enabled: false },
+    { name: "مرحله 3", value: "", enabled: false },
+    { name: "مرحله 4", value: "", enabled: false },
+    { name: "مرحله 5", value: "", enabled: false },
+  ]);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
+
+  const handleMilestoneChange = (index) => {
+    const updatedMilestones = [...milestones];
+    updatedMilestones[index].enabled = !updatedMilestones[index].enabled;
+    setMilestones(updatedMilestones);
+  };
+
+  const handleCreateCompetition = () => {
+    // Filter out milestones with enabled and non-empty values
+    const validMilestones = milestones.filter(
+      (milestone) => milestone.enabled && milestone.value !== ""
+    );
+
+    // Prepare data for POST request
+    const data = {
+      competitionName,
+      startDate,
+      endDate,
+      milestones: validMilestones,
+    };
+
+    // Perform the POST request to your API endpoint here
+    fetch("http://localhost:4000/newcomp", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        // Handle the response from the server as needed
+        console.log("Competition created successfully:", result);
+        // Optionally, you can close the modal or perform other actions
+        handleClose();
+      })
+      .catch((error) => {
+        // Handle any errors that occur during the POST request
+        console.error("Error creating competition:", error);
+      });
+  };
 
   return (
     <div className="container-div-competitions">
@@ -34,15 +80,28 @@ export default function Competitions() {
           <Form>
             <Form.Group controlId="competitionName">
               <Form.Label>نام مسابقه</Form.Label>
-              <Form.Control type="text" placeholder="نام مسابقه" />
+              <Form.Control
+                type="text"
+                placeholder="نام مسابقه"
+                value={competitionName}
+                onChange={(e) => setCompetitionName(e.target.value)}
+              />
             </Form.Group>
             <Form.Group controlId="startDate">
               <Form.Label>تاریخ شروع</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
             </Form.Group>
             <Form.Group controlId="endDate">
               <Form.Label>تاریخ پایان</Form.Label>
-              <Form.Control type="date" />
+              <Form.Control
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+              />
             </Form.Group>
             <hr className="milestones-hr-comp" />
             <Form.Group
@@ -50,76 +109,29 @@ export default function Competitions() {
               controlId="milestones"
             >
               <Form.Label className="milestones-title-comp">اهداف</Form.Label>
-              <div className="milestones-div-comp">
-                <Form.Check
-                  className="milestones-check-comp"
-                  type="checkbox"
-                  id="milestone1"
-                  onChange={() => setMilestone1Enabled(!milestone1Enabled)}
-                />
-                <FormControl
-                  className="milestones-inputs-comp"
-                  type="number"
-                  placeholder="مرحله 1"
-                  disabled={!milestone1Enabled}
-                />
-              </div>
-              <div className="milestones-div-comp">
-                <Form.Check
-                  className="milestones-check-comp"
-                  type="checkbox"
-                  id="milestone2"
-                  onChange={() => setMilestone2Enabled(!milestone2Enabled)}
-                />
-                <FormControl
-                  className="milestones-inputs-comp"
-                  type="number"
-                  placeholder="مرحله 2"
-                  disabled={!milestone2Enabled}
-                />
-              </div>
-              <div className="milestones-div-comp">
-                <Form.Check
-                  className="milestones-check-comp"
-                  type="checkbox"
-                  id="milestone3"
-                  onChange={() => setMilestone3Enabled(!milestone3Enabled)}
-                />
-                <FormControl
-                  className="milestones-inputs-comp"
-                  type="number"
-                  placeholder="مرحله 3"
-                  disabled={!milestone3Enabled}
-                />
-              </div>
-              <div className="milestones-div-comp">
-                <Form.Check
-                  className="milestones-check-comp"
-                  type="checkbox"
-                  id="milestone4"
-                  onChange={() => setMilestone4Enabled(!milestone4Enabled)}
-                />
-                <FormControl
-                  className="milestones-inputs-comp"
-                  type="number"
-                  placeholder="مرحله 4"
-                  disabled={!milestone4Enabled}
-                />
-              </div>
-              <div className="milestones-div-comp">
-                <Form.Check
-                  className="milestones-check-comp"
-                  type="checkbox"
-                  id="milestone5"
-                  onChange={() => setMilestone5Enabled(!milestone5Enabled)}
-                />
-                <FormControl
-                  className="milestones-inputs-comp"
-                  type="number"
-                  placeholder="مرحله 5"
-                  disabled={!milestone5Enabled}
-                />
-              </div>
+              {milestones.map((milestone, index) => (
+                <div className="milestones-div-comp" key={index}>
+                  <Form.Check
+                    className="milestones-check-comp"
+                    type="checkbox"
+                    id={`milestone${index + 1}`}
+                    checked={milestone.enabled}
+                    onChange={() => handleMilestoneChange(index)}
+                  />
+                  <FormControl
+                    className="milestones-inputs-comp"
+                    type="number"
+                    placeholder={`مرحله ${index + 1}`}
+                    value={milestone.value}
+                    onChange={(e) => {
+                      const updatedMilestones = [...milestones];
+                      updatedMilestones[index].value = e.target.value;
+                      setMilestones(updatedMilestones);
+                    }}
+                    disabled={!milestone.enabled}
+                  />
+                </div>
+              ))}
             </Form.Group>
           </Form>
         </Modal.Body>
@@ -127,7 +139,7 @@ export default function Competitions() {
           <Button variant="secondary" onClick={handleClose}>
             بستن
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleCreateCompetition}>
             ایجاد مسابقه
           </Button>
         </Modal.Footer>

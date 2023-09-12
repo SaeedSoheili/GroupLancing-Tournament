@@ -49,8 +49,11 @@ function App() {
               )
             }
           >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="projects" element={<Projects />} />
+            <Route
+              path="dashboard"
+              element={<Dashboard userRole={userRole} />}
+            />
+            <Route path="projects" element={<Projects userRole={userRole} />} />
             <Route path="users" element={<Users />} />
             <Route path="competitions" element={<Competitions />} />
           </Route>
