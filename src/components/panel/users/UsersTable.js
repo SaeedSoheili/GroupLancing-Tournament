@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -36,21 +36,21 @@ function createData(name, income, projects, avrageIncome) {
   };
 }
 
-const rows = [
-  createData("آرمان جعفری", 305, 3.7, 67),
-  createData("مهران اسدی", 452, 25.0, 51),
-  createData("سارا علیزاده", 262, 16.0, 24),
-  createData("حسن رحیمی", 159, 6.0, 4.0),
-  createData("نگین کریمی", 356, 16.0, 3.9),
-  createData("پارسا حسینی", 408, 3.2, 6.5),
-  createData("شایان محمدی", 237, 9.0, 4.3),
-  createData("سحر مرادی", 375, 0.0, 0.0),
-  createData("مریم محمودی", 518, 26.0, 7.0),
-  createData("امیرعباس موسوی", 392, 0.2, 0.0),
-  createData("فاطمه جوانمرد", 318, 0, 2.0),
-  createData("علی نوری", 360, 19.0, 37.0),
-  createData("زهرا صادقی", 437, 18.0, 4.0),
-];
+// const rows = [
+//   createData("آرمان جعفری", 305, 3.7, 67),
+//   createData("مهران اسدی", 452, 25.0, 51),
+//   createData("سارا علیزاده", 262, 16.0, 24),
+//   createData("حسن رحیمی", 159, 6.0, 4.0),
+//   createData("نگین کریمی", 356, 16.0, 3.9),
+//   createData("پارسا حسینی", 408, 3.2, 6.5),
+//   createData("شایان محمدی", 237, 9.0, 4.3),
+//   createData("سحر مرادی", 375, 0.0, 0.0),
+//   createData("مریم محمودی", 518, 26.0, 7.0),
+//   createData("امیرعباس موسوی", 392, 0.2, 0.0),
+//   createData("فاطمه جوانمرد", 318, 0, 2.0),
+//   createData("علی نوری", 360, 19.0, 37.0),
+//   createData("زهرا صادقی", 437, 18.0, 4.0),
+// ];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -234,12 +234,34 @@ EnhancedTableToolbar.propTypes = {
 };
 
 export default function EnhancedTable() {
-  const [order, setOrder] = React.useState("desc");
+  const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("income");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const [rows, setRows] = useState([]); // Initialize rows state with an empty array
+
+  useEffect(() => {
+    // Fetch user data from "/getuserslist" API endpoint
+    fetch("http://localhost:4000/getuserslist")
+      .then((response) => response.json())
+      .then((data) => {
+        // Calculate avrageIncome for each user and update the state
+        const updatedRows = data.map((user) => ({
+          name: user.name,
+          income: user.income,
+          projects: user.projects,
+          avrageIncome: user.income / user.projects,
+        }));
+        setRows(updatedRows);
+        setOrder("desc");
+      })
+      .catch((error) => {
+        console.error("Error fetching data: ", error);
+      });
+  }, []);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -357,13 +379,13 @@ export default function EnhancedTable() {
                       {row.name}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="right">
-                      {row.income}
+                      ${row.income}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="right">
                       {row.projects}
                     </TableCell>
-                    <TableCell style={tableCellStyle} align="right">
-                      {row.avrageIncome}
+                    <TableCell style={tableCellStyle} align="center">
+                      {isNaN(row.avrageIncome) ? "N/A" : "$" + row.avrageIncome}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="right">
                       {row.protein}

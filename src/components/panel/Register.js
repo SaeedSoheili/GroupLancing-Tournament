@@ -14,6 +14,7 @@ import Snackbar from "@mui/material/Snackbar"; // Import Snackbar
 import MuiAlert from "@mui/material/Alert"; // Import Alert for Snackbar
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link as LinkReactRouterDom } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const defaultTheme = createTheme();
 
@@ -21,6 +22,7 @@ export default function Register() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false); // State to control Snackbar visibility
   const [snackbarMessage, setSnackbarMessage] = React.useState(""); // State to set the Snackbar message
+  const navigate = useNavigate(); // Get the navigate function from react-router-dom
 
   const isFormValid = (user) => {
     return (
@@ -64,21 +66,30 @@ export default function Register() {
         body: JSON.stringify(user),
       });
 
+      const responseData = await response.json();
+
       if (response.ok) {
         console.log("User registered successfully");
         setSnackbarMessage("You registered successfully");
+        setTimeout(() => {
+          navigate("/login");
+        }, 3000); // Navigate to "/panel" after 3 seconds
       } else if (response.status === 409) {
         // 409 status code indicates email conflict (already in use)
         console.error("Error registering user: Email already exists.");
-        setSnackbarMessage("Email already in use. Please choose another.");
+        setSnackbarMessage(
+          responseData.error || "Email already in use. Please choose another."
+        );
       } else {
         console.error("Error registering user");
-        setSnackbarMessage("Error registering");
+        setSnackbarMessage(responseData.error || "Error registering");
       }
 
       setOpenSnackbar(true);
     } catch (error) {
       console.error("Error:", error);
+      setSnackbarMessage("Network error. Please try again later."); // Handle network errors
+      setOpenSnackbar(true);
     } finally {
       setIsLoading(false);
       setTimeout(() => {

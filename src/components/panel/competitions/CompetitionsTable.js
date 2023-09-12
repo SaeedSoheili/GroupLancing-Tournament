@@ -418,13 +418,13 @@ export default function EnhancedTable() {
                       {row.name}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
-                      {row.income}
+                      ${row.income}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
                       {row.projects}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
-                      {isNaN(row.avrageIncome) ? "N/A" : row.avrageIncome}
+                      {isNaN(row.avrageIncome) ? "N/A" : "$" + row.avrageIncome}
                     </TableCell>
 
                     <TableCell style={tableCellStyle} align="center">

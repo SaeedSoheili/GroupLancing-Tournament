@@ -12,6 +12,6 @@
   display: flex;
   justify-content: center;
   align-items: start;
-  overflow-y: scroll;
+  overflow-y: auto;
   border-radius: 20px;
 }
