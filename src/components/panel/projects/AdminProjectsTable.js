@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -92,14 +92,18 @@ function createData(name, status, income, date, manage) {
   return { name, status, income, date, manage };
 }
 
-const rows = [
-  createData("سعید سهیلی", "accepted", 800, "2003", " "),
-  createData("سعید رضایی", "accepted", 500, "2003", " "),
-].sort((a, b) => (a.income > b.income ? -1 : 1));
-
 export default function AdminProjectsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]); // State to store the project data
+
+  // Make an API request to fetch the project data from your backend
+  useEffect(() => {
+    fetch("http://localhost:4000/getprojectsdataadmin")
+      .then((response) => response.json())
+      .then((data) => setRows(data))
+      .catch((error) => console.error("Error fetching project data:", error));
+  }, []);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -113,6 +117,7 @@ export default function AdminProjectsTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -144,8 +149,8 @@ export default function AdminProjectsTable() {
           {(rowsPerPage > 0
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
-          ).map((row) => (
-            <TableRow key={row.name}>
+          ).map((row, index) => (
+            <TableRow key={row.name + index}>
               <TableCell
                 style={tableCellStyle}
                 align="center"
@@ -158,7 +163,7 @@ export default function AdminProjectsTable() {
                 {row.status}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
-                {row.income}
+                ${row.income}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
                 {row.date}

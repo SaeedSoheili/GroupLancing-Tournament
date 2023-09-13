@@ -162,7 +162,7 @@ export default function UserProjectsTable({ loggedInUserEmail }) {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.date}>
+            <TableRow key={row.date + row.income}>
               {/* <TableCell
                 style={tableCellStyle}
                 align="center"
@@ -175,7 +175,7 @@ export default function UserProjectsTable({ loggedInUserEmail }) {
                 {row.status}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
-                {row.income}
+                ${row.income}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
                 {row.date}
