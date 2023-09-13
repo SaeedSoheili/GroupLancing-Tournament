@@ -13,6 +13,7 @@ function App() {
   const [isLogin, setIsLogin] = useState(false); // Initialize isLogin to false
   const [loggedInUserName, setloggedInUserName] = useState(""); // Initialize isLogin to false
   const [loggedInUserLastName, setloggedInUserLastName] = useState(""); // Initialize isLogin to false
+  const [loggedInUserEmail, setloggedInUserEmail] = useState("");
   const [userRole, setuserRole] = useState("user"); // Initialize isLogin to false
 
   let isLoginHandler = (value) => {
@@ -25,6 +26,10 @@ function App() {
 
   let loggedInUserLastNameHandler = (value) => {
     setloggedInUserLastName(value);
+  };
+
+  let loggedInUserEmailHandler = (value) => {
+    setloggedInUserEmail(value);
   };
 
   let userRoleHandler = (value) => {
@@ -53,7 +58,15 @@ function App() {
               path="dashboard"
               element={<Dashboard userRole={userRole} />}
             />
-            <Route path="projects" element={<Projects userRole={userRole} />} />
+            <Route
+              path="projects"
+              element={
+                <Projects
+                  userRole={userRole}
+                  loggedInUserEmail={loggedInUserEmail}
+                />
+              }
+            />
             <Route path="users" element={<Users />} />
             <Route path="competitions" element={<Competitions />} />
           </Route>
@@ -64,6 +77,7 @@ function App() {
                 isLoginHandler={isLoginHandler}
                 loggedInUserNameHandler={loggedInUserNameHandler}
                 loggedInUserLastNameHandler={loggedInUserLastNameHandler}
+                loggedInUserEmailHandler={loggedInUserEmailHandler}
                 userRoleHandler={userRoleHandler}
               />
             } // Pass setIsLogin to Login component

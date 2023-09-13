@@ -23,6 +23,10 @@
   top: 0px;
 }
 
+.milestones-progressbar:nth-child(2) {
+  opacity: 0;
+}
+
 .total-details-progressbar {
   position: absolute;
   z-index: 4;
@@ -47,7 +51,7 @@
   border-left: 7px solid transparent; /* Left side */
   border-right: 7px solid transparent; /* Right side */
   border-top: 15px solid #dfb969; /* Bottom side and color */
-  margin-top: -15px;
+  margin-top: -5px;
 }
 
 .total-details-progressbar {

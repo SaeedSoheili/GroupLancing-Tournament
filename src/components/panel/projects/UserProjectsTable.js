@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useTheme } from "@mui/material/styles";
 import Box from "@mui/material/Box";
@@ -88,18 +88,35 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(name, status, income, date, manage) {
-  return { name, status, income, date, manage };
+function createData(status, income, date, manage) {
+  return { status, income, date, manage };
 }
 
-const rows = [
-  createData("سعید سهیلی", "accepted", 800, "2003", " "),
-  createData("سعید رضایی", "accepted", 500, "2003", " "),
-].sort((a, b) => (a.income > b.income ? -1 : 1));
-
-export default function UserProjectsTable() {
+export default function UserProjectsTable({ loggedInUserEmail }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rows, setRows] = useState([]); // State to store the fetched data
+
+  // Fetch data from the "/getmyprojects" API when the component mounts
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch(
+          `http://localhost:4000/getmyprojects?email=${loggedInUserEmail}`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setRows(data); // Update the rows state with the fetched data
+        } else {
+          console.error("Failed to fetch data from API");
+        }
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+
+    fetchData();
+  }, [loggedInUserEmail]);
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -133,7 +150,7 @@ export default function UserProjectsTable() {
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">نام و نام خانوادگی</StyledTableCell>
+            {/* <StyledTableCell align="center">نام و نام خانوادگی</StyledTableCell> */}
             <StyledTableCell align="center">وضعیت</StyledTableCell>
             <StyledTableCell align="center">مقدار درآمد</StyledTableCell>
             <StyledTableCell align="center">تاریخ</StyledTableCell>
@@ -145,15 +162,15 @@ export default function UserProjectsTable() {
             ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : rows
           ).map((row) => (
-            <TableRow key={row.name}>
-              <TableCell
+            <TableRow key={row.date}>
+              {/* <TableCell
                 style={tableCellStyle}
                 align="center"
                 component="th"
                 scope="row"
               >
                 {row.name}
-              </TableCell>
+              </TableCell> */}
               <TableCell style={tableCellStyle} align="center">
                 {row.status}
               </TableCell>

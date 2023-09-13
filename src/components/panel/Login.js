@@ -43,6 +43,7 @@ export default function Login({
   isLoginHandler,
   loggedInUserNameHandler,
   loggedInUserLastNameHandler,
+  loggedInUserEmailHandler,
   userRoleHandler,
 }) {
   const navigate = useNavigate(); // Get the navigate function from react-router-dom
@@ -69,6 +70,7 @@ export default function Login({
             // Set the loggedInUserName and loggedInUserLastName in state
             loggedInUserNameHandler(responseBody.firstName);
             loggedInUserLastNameHandler(responseBody.lastName);
+            loggedInUserEmailHandler(responseBody.email);
             userRoleHandler(responseBody.role);
           }
         } catch (error) {
@@ -116,6 +118,7 @@ export default function Login({
         // Set the loggedInUserName and loggedInUserLastName in state
         loggedInUserNameHandler(responseBody.firstName);
         loggedInUserLastNameHandler(responseBody.lastName);
+        loggedInUserEmailHandler(responseBody.email);
         userRoleHandler(responseBody.role);
 
         setTimeout(() => {
