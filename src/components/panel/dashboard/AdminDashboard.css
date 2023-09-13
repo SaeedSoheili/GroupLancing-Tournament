@@ -71,6 +71,7 @@
   font-size: 18px;
   font-weight: 700;
   margin-bottom: 5px;
+  margin-top: 20px;
 }
 
 .top-income-chart-dashboard,
@@ -114,10 +115,11 @@
   font-size: 18px;
   font-weight: 700;
   text-align: center;
+  margin-top: 20px;
 }
 
 .weekly-chart-dashboard {
   width: 100%;
-  height: 100%;
+  height: 80%;
   /* background-color: red; */
 }

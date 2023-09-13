@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./AdminDashboard.css";
 import HighestIncomeChart from "../../charts/HighestIncomeChart";
 import HighestProjectChart from "../../charts/HighestProjectChart";
 import WeeklyChart from "../../charts/WeeklyChart";
 
 export default function AdminDashboard() {
+  const [dashboardData, setDashboardData] = useState({
+    income: 0,
+    projects: 0,
+  });
+
+  useEffect(() => {
+    // Make an HTTP GET request to the /dashboardstatusadmin API
+    fetch("http://localhost:4000/dashboardstatusadmin")
+      .then((response) => response.json())
+      .then((data) => {
+        setDashboardData(data); // Update the component state with the received data
+      })
+      .catch((error) => {
+        console.error("Error fetching dashboard data:", error);
+      });
+  }, []);
+
   return (
     <div className="div-container-dashboard">
       <div className="first-row-dashboard">
@@ -24,10 +41,12 @@ export default function AdminDashboard() {
         </div>
         <div className="first-row-right-div-dashboard">
           <p className="right-div-title-dashboard">مجموع درآمد مسابقه</p>
-          <p className="right-div-counter-dashboard">10000$</p>
+          <p className="right-div-counter-dashboard">{dashboardData.income}$</p>
           <div className="right-div-bar-dashboard">&nbsp;</div>
           <p className="right-div-title-dashboard">مجموع تعداد پروژه ها</p>
-          <p className="right-div-counter-dashboard">142 پروژه</p>
+          <p className="right-div-counter-dashboard">
+            {dashboardData.projects} پروژه
+          </p>
         </div>
       </div>
       <div className="second-row-dashboard">
