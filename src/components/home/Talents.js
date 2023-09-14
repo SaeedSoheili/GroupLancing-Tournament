@@ -3,7 +3,6 @@ import "./Talents.css";
 // import { users } from "../../FakeData";
 
 export default function Talents({ platformName, users }) {
-  console.log(users);
   // const platform = platformName; // Change this to your desired platform
   // const filteredUsers = users.filter((user) => user.platform === platform);
 

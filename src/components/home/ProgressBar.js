@@ -1,19 +1,25 @@
 import React from "react";
 import "./ProgressBar.css";
 
-export default function ProgressBar() {
-  const milestones = [
-    { amount: 0, label: "شروع مسابقه" },
-    { amount: 2000, label: "2000$ هدف اول" },
-    { amount: 4000, label: "4000$ هدف دوم" },
-    { amount: 6000, label: "6000$ هدف سوم" },
-    { amount: 8000, label: "8000$ هدف چهارم" },
-    { amount: 10000, label: "10000$ هدف پنجم" },
-  ];
+export default function ProgressBar({
+  progressBarData,
+  incomeData,
+  projectsData,
+}) {
+  // const milestones = [
+  //   { value: 0, name: "شروع مسابقه" },
+  //   { value: 2000, name: "2000$ هدف اول" },
+  //   { value: 4000, name: "4000$ هدف دوم" },
+  //   { value: 6000, name: "6000$ هدف سوم" },
+  //   { value: 8000, name: "8000$ هدف چهارم" },
+  //   { value: 10000, name: "10000$ هدف پنجم" },
+  // ];
 
-  const lastMilestoneAmount = milestones[milestones.length - 1].amount;
-  const totalIncomes = 3210;
-  const totalProjects = 168;
+  let milestones = progressBarData;
+
+  const lastMilestoneAmount = milestones[milestones.length - 1].value;
+  const totalIncomes = incomeData;
+  const totalProjects = projectsData;
   let progressBarStyle = {
     width: `${(totalIncomes * 100) / lastMilestoneAmount}%`,
   };
@@ -42,14 +48,14 @@ export default function ProgressBar() {
           {/* Mile Stones */}
           {milestones.map((milestone) => {
             let mileStonePositionPercent =
-              (milestone.amount * 100) / lastMilestoneAmount;
+              (milestone.value * 100) / lastMilestoneAmount;
             let mileStoneStyle = {
               left: `${mileStonePositionPercent}%`,
             };
 
             return (
               <div
-                key={milestone.amount}
+                key={milestone.value}
                 style={mileStoneStyle}
                 className="milestones-progressbar"
               ></div>
@@ -60,18 +66,18 @@ export default function ProgressBar() {
           {/* Milestones Details */}
           {milestones.map((milestone) => {
             let mileStoneDetailsPositionPercent =
-              (milestone.amount * 100) / lastMilestoneAmount - 5;
+              (milestone.value * 100) / lastMilestoneAmount - 5;
             let mileStoneDetailsStyle = {
               left: `${mileStoneDetailsPositionPercent}%`,
             };
 
             return (
               <div
-                key={milestone.amount}
+                key={milestone.value}
                 style={mileStoneDetailsStyle}
                 className="milestones-details-progressbar"
               >
-                {milestone.label}
+                {milestone.name}
               </div>
             );
           })}

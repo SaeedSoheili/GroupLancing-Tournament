@@ -4,7 +4,14 @@ import Talents from "./Talents";
 import ProgressBar from "./ProgressBar";
 
 export default function Home() {
-  const [talentData, setTalentData] = useState(null); // Initialize as null to indicate data is loading
+  const [talentDataFiverr, setTalentDataFiverr] = useState(null); // Initialize as null to indicate data is loading
+  const [talentDataUpwork, setTalentDataUpwork] = useState(null); // Initialize as null to indicate data is loading
+  const [talentDataAmazon, setTalentDataAmazon] = useState(null); // Initialize as null to indicate data is loading
+  const [talentDataPph, setTalentDataPph] = useState(null); // Initialize as null to indicate data is loading
+
+  const [progressBarData, setprogressBarData] = useState(null); // Initialize as null to indicate data is loading
+  const [incomeData, setincomeData] = useState(null); // Initialize as null to indicate data is loading
+  const [projectsData, setprojectsData] = useState(null); // Initialize as null to indicate data is loading
 
   useEffect(() => {
     // Fetch data from the API
@@ -12,8 +19,28 @@ export default function Home() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success) {
-          setTalentData(data.data);
-          console.log(data.data);
+          setTalentDataFiverr(data.data.fiverr);
+          setTalentDataUpwork(data.data.upwork);
+          setTalentDataAmazon(data.data.amazon);
+          setTalentDataPph(data.data.peopleperhour);
+        } else {
+          console.error("Error fetching data");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+  useEffect(() => {
+    // Fetch data from the API
+    fetch("http://localhost:4000/getprogressbardata")
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.success) {
+          setprogressBarData(data.data.milestones);
+          setincomeData(data.data.income);
+          setprojectsData(data.data.projects);
         } else {
           console.error("Error fetching data");
         }
@@ -39,21 +66,27 @@ export default function Home() {
         تا روز <span className="subtitle-currentday-home">۶۴</span>
       </p>
       <div className="container-body">
-        {/* Conditionally render Talents component when talentData is available */}
-        {talentData && (
-          <>
-            <Talents platformName="upwork" users={talentData.upwork} />
-            <Talents platformName="fiverr" users={talentData.fiverr} />
-            <Talents platformName="amazon" users={talentData.amazon} />
-            <Talents
-              platformName="peopleperhour"
-              users={talentData.peopleperhour}
-            />
-          </>
+        {talentDataUpwork && (
+          <Talents platformName="upwork" users={talentDataUpwork} />
+        )}
+        {talentDataFiverr && (
+          <Talents platformName="fiverr" users={talentDataFiverr} />
+        )}
+        {talentDataAmazon && (
+          <Talents platformName="amazon" users={talentDataAmazon} />
+        )}
+        {talentDataPph && (
+          <Talents platformName="peopleperhour" users={talentDataPph} />
         )}
       </div>
       <div className="footer-home">
-        <ProgressBar />
+        {progressBarData && (
+          <ProgressBar
+            progressBarData={progressBarData}
+            incomeData={incomeData}
+            projectsData={projectsData}
+          />
+        )}
       </div>
     </div>
   );
