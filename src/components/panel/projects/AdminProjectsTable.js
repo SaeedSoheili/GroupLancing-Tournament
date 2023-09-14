@@ -95,15 +95,52 @@ function createData(name, status, income, date, manage) {
 export default function AdminProjectsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [rows, setRows] = useState([]); // State to store the project data
+  const [rows, setRows] = useState([]);
+  const [statusUpdating, setStatusUpdating] = useState(false);
+  const [sortColumn, setSortColumn] = useState(null);
+  const [sortOrder, setSortOrder] = useState("asc"); // Default sort order
 
   // Make an API request to fetch the project data from your backend
   useEffect(() => {
     fetch("http://localhost:4000/getprojectsdataadmin")
       .then((response) => response.json())
-      .then((data) => setRows(data))
+      .then((data) => {
+        setRows(data);
+      })
       .catch((error) => console.error("Error fetching project data:", error));
   }, []);
+
+  const handleStatusUpdate = async (projectId, newStatus) => {
+    try {
+      setStatusUpdating(true);
+
+      // Send a PUT request to your backend API to update the project status
+      const response = await fetch(
+        `http://localhost:4000/updatestatus/${projectId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ newStatus }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedRows = rows.map((row) =>
+          row.id === projectId ? { ...row, status: newStatus } : row
+        );
+        setRows(updatedRows);
+      } else {
+        // Handle errors
+        console.error("Failed to update status");
+      }
+    } catch (error) {
+      console.error("Error updating status:", error);
+    } finally {
+      setStatusUpdating(false);
+    }
+  };
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -133,22 +170,100 @@ export default function AdminProjectsTable() {
     fontFamily: '"Vazirmatn", sans-serif',
   };
 
+  // Function to handle column sorting
+  const handleSort = (columnName) => {
+    if (sortColumn === columnName) {
+      // Toggle sorting order if clicking the same column
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      // Sort in ascending order by default when clicking a new column
+      setSortColumn(columnName);
+      setSortOrder("asc");
+    }
+  };
+
+  // Sorting logic for rows
+  const sortedRows = [...rows].sort((a, b) => {
+    const columnA = a[sortColumn] || ""; // Provide a default value (empty string) for undefined data
+    const columnB = b[sortColumn] || ""; // Provide a default value (empty string) for undefined data
+
+    // Compare the two values based on the column type
+    if (sortOrder === "asc") {
+      if (sortColumn === "income") {
+        return parseFloat(columnA) - parseFloat(columnB);
+      } else if (sortColumn === "date") {
+        const dateA = new Date(columnA).getTime();
+        const dateB = new Date(columnB).getTime();
+        return dateA - dateB;
+      } else {
+        return columnA.localeCompare(columnB);
+      }
+    } else {
+      if (sortColumn === "income") {
+        return parseFloat(columnB) - parseFloat(columnA);
+      } else if (sortColumn === "date") {
+        const dateA = new Date(columnA).getTime();
+        const dateB = new Date(columnB).getTime();
+        return dateB - dateA;
+      } else {
+        return columnB.localeCompare(columnA);
+      }
+    }
+  });
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
         <TableHead>
           <TableRow>
-            <StyledTableCell align="center">نام و نام خانوادگی</StyledTableCell>
-            <StyledTableCell align="center">وضعیت</StyledTableCell>
-            <StyledTableCell align="center">مقدار درآمد</StyledTableCell>
-            <StyledTableCell align="center">تاریخ</StyledTableCell>
+            <StyledTableCell
+              align="center"
+              onClick={() => handleSort("name")} // Add onClick for sorting
+            >
+              نام و نام خانوادگی
+              {sortColumn === "name" && (
+                <span>{sortOrder === "asc" ? "↑" : "↓"}</span>
+              )}
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              onClick={() => handleSort("status")} // Add onClick for sorting
+            >
+              وضعیت
+              {sortColumn === "status" && (
+                <span>{sortOrder === "asc" ? "↑" : "↓"}</span>
+              )}
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              onClick={() => handleSort("income")} // Add onClick for sorting
+            >
+              مقدار درآمد
+              {sortColumn === "income" && (
+                <span>{sortOrder === "asc" ? "↑" : "↓"}</span>
+              )}
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              onClick={() => handleSort("date")} // Add onClick for sorting
+            >
+              تاریخ
+              {sortColumn === "date" && (
+                <span>{sortOrder === "asc" ? "↑" : "↓"}</span>
+              )}
+            </StyledTableCell>
+            {/* <StyledTableCell align="center">مقدار درآمد</StyledTableCell> */}
+            {/* <StyledTableCell align="center">تاریخ</StyledTableCell> */}
             <StyledTableCell align="center">مدیریت</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {(rowsPerPage > 0
-            ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : rows
+            ? sortedRows.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
+            : sortedRows
           ).map((row, index) => (
             <TableRow key={row.name + index}>
               <TableCell
@@ -160,7 +275,31 @@ export default function AdminProjectsTable() {
                 {row.name}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
-                {row.status}
+                {row.status === "accepted" ? (
+                  <img
+                    src="../assets/icons8-tick-96.png"
+                    alt="Accept"
+                    onClick={() => handleStatusUpdate(row.id, "accepted")}
+                    disabled={statusUpdating}
+                    width="30px"
+                  />
+                ) : row.status === "pending" ? (
+                  <img
+                    src="../assets/icons8-pending-96.png"
+                    alt="Pending"
+                    onClick={() => handleStatusUpdate(row.id, "pending")}
+                    disabled={statusUpdating}
+                    width="30px"
+                  />
+                ) : (
+                  <img
+                    src="../assets/icons8-cancel-96.png"
+                    alt="Decline"
+                    onClick={() => handleStatusUpdate(row.id, "declined")}
+                    disabled={statusUpdating}
+                    width="30px"
+                  />
+                )}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
                 ${row.income}
@@ -169,7 +308,27 @@ export default function AdminProjectsTable() {
                 {row.date}
               </TableCell>
               <TableCell style={tableCellStyle} align="center">
-                {row.manage}
+                <img
+                  src="../assets/icons8-tick-96.png"
+                  alt="Accept"
+                  onClick={() => handleStatusUpdate(row.id, "accepted")}
+                  disabled={statusUpdating}
+                  width="30px"
+                />
+                <img
+                  src="../assets/icons8-pending-96.png"
+                  alt="Pending"
+                  onClick={() => handleStatusUpdate(row.id, "pending")}
+                  disabled={statusUpdating}
+                  width="30px"
+                />
+                <img
+                  src="../assets/icons8-cancel-96.png"
+                  alt="Decline"
+                  onClick={() => handleStatusUpdate(row.id, "declined")}
+                  disabled={statusUpdating}
+                  width="30px"
+                />
               </TableCell>
             </TableRow>
           ))}
