@@ -15,7 +15,7 @@ export default function SideBar({ loggedInUserName, userRoleMain }) {
     document.cookie =
       "tekanesh_auto_login=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     // Navigate to the "/login" page
-    navigate("/login");
+    navigate("/");
   };
 
   const changeMenu = (menu) => {

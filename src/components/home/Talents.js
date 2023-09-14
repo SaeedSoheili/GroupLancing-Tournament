@@ -1,16 +1,19 @@
 import React from "react";
 import "./Talents.css";
-import { users } from "../../FakeData";
+// import { users } from "../../FakeData";
 
-export default function Talents({ platformName }) {
-  const platform = platformName; // Change this to your desired platform
-  const filteredUsers = users.filter((user) => user.platform === platform);
+export default function Talents({ platformName, users }) {
+  console.log(users);
+  // const platform = platformName; // Change this to your desired platform
+  // const filteredUsers = users.filter((user) => user.platform === platform);
 
-  // Sort users by income in descending order
-  const sortedUsers = filteredUsers.slice().sort((a, b) => b.income - a.income);
+  // // Sort users by income in descending order
+  // const sortedUsers = filteredUsers.slice().sort((a, b) => b.income - a.income);
 
-  // Limit the number of users to display to a maximum of 4
-  const topUsers = sortedUsers.slice(0, 5);
+  // // Limit the number of users to display to a maximum of 4
+  // const topUsers = sortedUsers.slice(0, 5);
+
+  let topUsers = users;
 
   return (
     <div className="talent-div">

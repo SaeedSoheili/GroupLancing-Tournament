@@ -30,7 +30,7 @@ export default function ProgressBar() {
             <p>
               {totalProjects} پروژه ، {totalIncomes}$
             </p>
-            <div class="triangle"></div>
+            <div className="triangle"></div>
           </div>
         </div>
         <div className="progressbar-div-progressbar">

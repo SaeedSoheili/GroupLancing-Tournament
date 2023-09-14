@@ -29,7 +29,9 @@ export default function Register() {
       user.firstName.trim() !== "" &&
       user.lastName.trim() !== "" &&
       user.email.trim() !== "" &&
-      user.password.trim() !== ""
+      user.password.trim() !== "" &&
+      user.platform !== "" && // New field: platform
+      user.job.trim() !== "" // New field: job
     );
   };
 
@@ -47,6 +49,8 @@ export default function Register() {
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
+      platform: data.get("platform"), // New field: platform
+      job: data.get("job"), // New field: job
     };
 
     if (!isFormValid(user)) {
@@ -163,6 +167,37 @@ export default function Register() {
                   type="password"
                   id="password"
                   autoComplete="new-password"
+                />
+              </Grid>
+              {/* New field: Platform */}
+              <Grid item xs={12}>
+                <TextField
+                  select
+                  required
+                  fullWidth
+                  name="platform"
+                  label="Platform"
+                  id="platform"
+                  SelectProps={{
+                    native: true,
+                  }}
+                >
+                  <option value=""></option>
+                  <option value="fiverr">Fiverr</option>
+                  <option value="upwork">Upwork</option>
+                  <option value="amazon">Amazon</option>
+                  <option value="peopleperhour">PeoplePerHour</option>
+                </TextField>
+              </Grid>
+              {/* New field: Job */}
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="job"
+                  label="Job"
+                  id="job"
+                  autoComplete="off"
                 />
               </Grid>
             </Grid>
