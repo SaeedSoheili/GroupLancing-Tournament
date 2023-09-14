@@ -35,7 +35,8 @@ function createData(
   avrageIncome,
   starttime,
   endtime,
-  status
+  status,
+  id
 ) {
   return {
     name,
@@ -45,6 +46,7 @@ function createData(
     starttime,
     endtime,
     status,
+    id,
   };
 }
 
@@ -289,7 +291,8 @@ export default function EnhancedTable() {
               avrageIncome,
               competition.startDate,
               competition.endDate,
-              competition.status
+              competition.status,
+              competition.id
             );
           });
           setRows(newRows);
@@ -366,6 +369,24 @@ export default function EnhancedTable() {
     [order, orderBy, page, rowsPerPage]
   );
 
+  const handleManageClick = (event, rowId) => {
+    event.stopPropagation(); // Prevent row click event from propagating
+    // Make a POST request to send the rowId to the API
+    fetch("http://localhost:4000/compupdatestatus", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: rowId }),
+    })
+      .then((response) => {
+        // Handle the response as needed
+      })
+      .catch((error) => {
+        // Handle errors
+      });
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Paper sx={{ width: "100%", mb: 2 }}>
@@ -436,12 +457,36 @@ export default function EnhancedTable() {
                       {row.endtime}
                     </TableCell>
                     <TableCell style={tableCellStyle} align="center">
-                      {row.status}
+                      {row.status === "active" ? (
+                        <img
+                          src="../assets/icons8-circle-96-active.png"
+                          alt="Active"
+                          width="25px"
+                        />
+                      ) : row.status === "created" ? (
+                        <img
+                          src="../assets/icons8-circle-96-created.png"
+                          alt="Created"
+                          width="25px"
+                        />
+                      ) : (
+                        <img
+                          src="../assets/icons8-circle-96-finished.png"
+                          alt="Finished"
+                          width="25px"
+                        />
+                      )}
                     </TableCell>
-                    <TableCell
-                      style={tableCellStyle}
-                      align="center"
-                    ></TableCell>
+                    <TableCell style={tableCellStyle} align="center">
+                      <img
+                        src="../assets/icons8-edit-64.png" // Replace with the actual path to your image
+                        alt="Manage"
+                        width="25px"
+                        onClick={
+                          (event) => handleManageClick(event, row.id) // Pass row._id
+                        }
+                      />
+                    </TableCell>
                   </TableRow>
                 );
               })}

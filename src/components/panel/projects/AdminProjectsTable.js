@@ -278,25 +278,19 @@ export default function AdminProjectsTable() {
                 {row.status === "accepted" ? (
                   <img
                     src="../assets/icons8-tick-96.png"
-                    alt="Accept"
-                    onClick={() => handleStatusUpdate(row.id, "accepted")}
-                    disabled={statusUpdating}
+                    alt="Accepted"
                     width="30px"
                   />
                 ) : row.status === "pending" ? (
                   <img
                     src="../assets/icons8-pending-96.png"
                     alt="Pending"
-                    onClick={() => handleStatusUpdate(row.id, "pending")}
-                    disabled={statusUpdating}
                     width="30px"
                   />
                 ) : (
                   <img
                     src="../assets/icons8-cancel-96.png"
-                    alt="Decline"
-                    onClick={() => handleStatusUpdate(row.id, "declined")}
-                    disabled={statusUpdating}
+                    alt="Declined"
                     width="30px"
                   />
                 )}
