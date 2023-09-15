@@ -56,7 +56,12 @@ function App() {
           >
             <Route
               path="dashboard"
-              element={<Dashboard userRole={userRole} />}
+              element={
+                <Dashboard
+                  userRole={userRole}
+                  loggedInUserEmail={loggedInUserEmail}
+                />
+              }
             />
             <Route
               path="projects"

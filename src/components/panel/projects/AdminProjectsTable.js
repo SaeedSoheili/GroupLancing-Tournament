@@ -106,6 +106,7 @@ export default function AdminProjectsTable() {
       .then((response) => response.json())
       .then((data) => {
         setRows(data);
+        console.log(data);
       })
       .catch((error) => console.error("Error fetching project data:", error));
   }, []);

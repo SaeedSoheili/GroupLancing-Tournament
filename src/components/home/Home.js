@@ -13,6 +13,8 @@ export default function Home() {
   const [incomeData, setincomeData] = useState(null); // Initialize as null to indicate data is loading
   const [projectsData, setprojectsData] = useState(null); // Initialize as null to indicate data is loading
 
+  const [daysPassed, setdaysPassed] = useState(null); // Initialize as null to indicate data is loading
+
   useEffect(() => {
     // Fetch data from the API
     fetch("http://localhost:4000/usersdatahome")
@@ -41,6 +43,7 @@ export default function Home() {
           setprogressBarData(data.data.milestones);
           setincomeData(data.data.income);
           setprojectsData(data.data.projects);
+          setdaysPassed(data.data.day);
         } else {
           console.error("Error fetching data");
         }
@@ -60,11 +63,16 @@ export default function Home() {
         className="party-popper-image party-popper-image-2"
         src="./assets/party-popper.png"
       />
+      {daysPassed && (
+        <>
+          <h1 className="title-home">نتایج مسابقه</h1>
+          <p className="subtitle-home">
+            تا روز{" "}
+            <span className="subtitle-currentday-home">{daysPassed}</span>
+          </p>
+        </>
+      )}
 
-      <h1 className="title-home">نتایج مسابقه</h1>
-      <p className="subtitle-home">
-        تا روز <span className="subtitle-currentday-home">۶۴</span>
-      </p>
       <div className="container-body">
         {talentDataUpwork && (
           <Talents platformName="upwork" users={talentDataUpwork} />
